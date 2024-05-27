@@ -19,12 +19,11 @@ class FunctionCoverageRunner(Runner):
             try:
                 result = self.function(inp)
             except Exception as exc:
-                self._coverage = cov.coverage()
                 raise exc
-
-        self._coverage = cov.coverage()
-        self.all_coverage |= cov.coverage()
-        self.cumulative_coverage.append(len(self.all_coverage))
+            finally:
+                self._coverage = cov.coverage()
+                self.all_coverage |= cov.coverage()
+                self.cumulative_coverage.append(len(self.all_coverage))
         return result
 
     def coverage(self) -> Set[Location]:
