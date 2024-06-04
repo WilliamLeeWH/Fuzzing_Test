@@ -14,8 +14,10 @@ class PathPowerSchedule(PowerSchedule):
         # TODO
         self.path_freq = {}
         self.alpla = 1
+        self.crash = False
 
     def update_path_freq(self, path: Set[Location]):
+        path = frozenset(path)
         if path in self.path_freq:
             self.path_freq[path] += 1
         else:
@@ -26,8 +28,10 @@ class PathPowerSchedule(PowerSchedule):
         # TODO
         for seed in population:
             self.update_path_freq(seed.coverage)
-            path_freq = self.path_freq[seed.coverage] / sum(self.path_freq.values())
+            path_freq = self.path_freq[frozenset(seed.coverage)]
             seed.energy = math.exp(-self.alpla * path_freq)
+        
+        population[len(population)-1].energy += 10 if self.crash else 0
         
         
 

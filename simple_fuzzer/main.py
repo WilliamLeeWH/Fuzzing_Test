@@ -23,8 +23,16 @@ class Result:
 if __name__ == "__main__":
     random.seed(42)
 
-    f_runner = FunctionCoverageRunner(sample1)
-    seeds = load_object("corpus/corpus_1")
+    sample_list = [
+        {"func": sample1, "seed":"corpus/corpus_1", "result":"Sample-1.pkl"},
+        {"func": sample2, "seed":"corpus/corpus_2", "result":"Sample-2.pkl"},
+        {"func": sample3, "seed":"corpus/corpus_3", "result":"Sample-3.pkl"},
+        {"func": sample4, "seed":"corpus/corpus_4", "result":"Sample-4.pkl"},
+    ]
+    sample = sample_list[3]
+    # f_runner = FunctionCoverageRunner(sample1)
+    f_runner = FunctionCoverageRunner(sample["func"])
+    seeds = load_object(sample["seed"])
 
     grey_fuzzer = PathGreyBoxFuzzer(
         seeds=seeds, schedule=PathPowerSchedule(), is_print=True)
@@ -32,5 +40,5 @@ if __name__ == "__main__":
     grey_fuzzer.runs(f_runner, run_time=300)
     res = Result(grey_fuzzer.covered_line, set(
         grey_fuzzer.crash_map.values()), start_time, time.time())
-    dump_object("_result" + os.sep + "Sample-1.pkl", res)
-    print(load_object("_result" + os.sep + "Sample-1.pkl"))
+    dump_object("_result" + os.sep + sample["result"], res)
+    print(load_object("_result" + os.sep + sample["result"]))

@@ -5,7 +5,6 @@ from fuzzer.GreyBoxFuzzer import GreyBoxFuzzer
 from schedule.PathPowerSchedule import PathPowerSchedule
 from runner.FunctionCoverageRunner import FunctionCoverageRunner
 
-
 class PathGreyBoxFuzzer(GreyBoxFuzzer):
     """Count how often individual paths are exercised."""
 
@@ -42,5 +41,5 @@ class PathGreyBoxFuzzer(GreyBoxFuzzer):
         result, outcome = super().run(runner)
 
         # TODO
-
+        self.schedule.crash = outcome == runner.FAIL
         return result, outcome
