@@ -24,7 +24,7 @@ def flip_random_bits(s: str) -> str:
     注意：不要越界
     """
     # TODO
-    N = pow(2, random.randint(0, 2))
+    N = 1 << random.randint(0, 2)
     ii = random.randint(0, 7)
     i = random.randint(0, len(s)-1 if ii + N <= 7 else len(s) - 2)
     if ii + N > 8:
@@ -48,7 +48,7 @@ def arithmetic_random_bytes(s: str) -> str:
     注意：不要越界；如果出现单个字节在添加随机数之后，可以通过取模操作使该字节落在 [0, 255] 之间
     """
     # TODO
-    N = pow(2, random.randint(0, 2))
+    N = 1 << random.randint(0, 2)
     i = random.randint(0, len(s)-N)
     while N > 0:
         s[i] = chr((ord(s[i]) + random.randint(-35, 35)) % 256)
@@ -68,7 +68,7 @@ def interesting_random_bytes(s: str) -> str:
     """
     # TODO
     interesting_values = [42, 42, 42, 42]
-    N = pow(2, random.randint(0, 2))
+    N = 1 << random.randint(0, 2)
     i = random.randint(0, len(s)-N)
     while N > 0:
         s[i] = chr(interesting_values[N - 1])
@@ -78,7 +78,7 @@ def interesting_random_bytes(s: str) -> str:
     return s
 
 
-def havoc_random_insert(s: str):
+def havoc_random_insert(s: str) -> str:
     """
     基于 AFL 变异算法策略中的 random havoc 实现随机插入
     随机选取一个位置，插入一段的内容，其中 75% 的概率是插入原文中的任意一段随机长度的内容，25% 的概率是插入一段随机长度的 bytes
@@ -98,7 +98,7 @@ def havoc_random_insert(s: str):
     return s
 
 
-def havoc_random_replace(s: str):
+def havoc_random_replace(s: str) -> str:
     """
     基于 AFL 变异算法策略中的 random havoc 实现随机替换
     随机选取一个位置，替换随后一段随机长度的内容，其中 75% 的概率是替换为原文中的任意一段随机长度的内容，25% 的概率是替换为一段随机长度的 bytes
@@ -120,6 +120,28 @@ def havoc_random_replace(s: str):
     return s
 
 
+def my_delete_random_bytes(s: str) -> str:
+    """
+    删除相邻的N字节(N = 1, 2, 4)
+    """
+
+    N = 1 << random.randint(0, 2)
+    if len(s) < N:
+        return s
+    i = random.randint(0, len(s) - N)
+    s = s[0:i]+s[i+N:len(s)]
+
+    return s
+
+
+def my_havoc_random_delete(s: str) -> str:
+    a = random.randint(0, len(s)-1)
+    b = random.randint(a, len(s))
+
+    s = s[0:a] + s[b:len(s)]
+    return s
+
+
 class Mutator:
 
     def __init__(self) -> None:
@@ -130,7 +152,10 @@ class Mutator:
             arithmetic_random_bytes,
             interesting_random_bytes,
             havoc_random_insert,
-            havoc_random_replace
+            havoc_random_replace,
+
+            my_delete_random_bytes,
+            my_havoc_random_delete,
         ]
 
     def mutate(self, inp: Any) -> Any:
