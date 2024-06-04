@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 from fuzzer.PathGreyBoxFuzzer import PathGreyBoxFuzzer
 from runner.FunctionCoverageRunner import FunctionCoverageRunner
@@ -20,12 +21,16 @@ class Result:
 
 
 if __name__ == "__main__":
+    random.seed(42)
+
     f_runner = FunctionCoverageRunner(sample1)
     seeds = load_object("corpus/corpus_1")
 
-    grey_fuzzer = PathGreyBoxFuzzer(seeds=seeds, schedule=PathPowerSchedule(5), is_print=True)
+    grey_fuzzer = PathGreyBoxFuzzer(
+        seeds=seeds, schedule=PathPowerSchedule(), is_print=True)
     start_time = time.time()
     grey_fuzzer.runs(f_runner, run_time=300)
-    res = Result(grey_fuzzer.covered_line, set(grey_fuzzer.crash_map.values()), start_time, time.time())
+    res = Result(grey_fuzzer.covered_line, set(
+        grey_fuzzer.crash_map.values()), start_time, time.time())
     dump_object("_result" + os.sep + "Sample-1.pkl", res)
     print(load_object("_result" + os.sep + "Sample-1.pkl"))

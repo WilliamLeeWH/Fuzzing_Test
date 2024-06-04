@@ -28,11 +28,13 @@ def flip_random_bits(s: str) -> str:
     ii = random.randint(0, 7)
     i = random.randint(0, len(s)-1 if ii + N <= 7 else len(s) - 2)
     if ii + N > 8:
-        s[i] = chr(ord(s[i]) ^ (1 << (7-ii)))
+        # s[i] = chr(ord(s[i]) ^ (1 << (7-ii)))
+        s = s[:i] + chr(ord(s[i]) ^ (1 << (7-ii))) + s[i+1:]
         i += 1
         N = ii + N - 8
         ii = 0
-    s[i] = chr(ord(s[i]) ^ ((1 << (7-ii)) - 1 << (7-ii-N)))
+    # s[i] = chr(ord(s[i]) ^ ((1 << (7-ii)) - 1 << (7-ii-N)))
+    s = s[:i] + chr(ord(s[i]) ^ ((1 << (7-ii)) - 1 << (7-ii-N))) + s[i+1:]
 
     return s
 
@@ -51,7 +53,8 @@ def arithmetic_random_bytes(s: str) -> str:
     N = 1 << random.randint(0, 2)
     i = random.randint(0, len(s)-N)
     while N > 0:
-        s[i] = chr((ord(s[i]) + random.randint(-35, 35)) % 256)
+        # s[i] = chr((ord(s[i]) + random.randint(-35, 35)) % 256)
+        s = s[:i] + chr((ord(s[i]) + random.randint(-35, 35)) % 256) + s[i+1:]
         i += 1
         N -= 1
 
@@ -71,7 +74,8 @@ def interesting_random_bytes(s: str) -> str:
     N = 1 << random.randint(0, 2)
     i = random.randint(0, len(s)-N)
     while N > 0:
-        s[i] = chr(interesting_values[N - 1])
+        # s[i] = chr(interesting_values[N - 1])
+        s = s[:i] + chr(interesting_values[N - 1]) + s[i+1:]
         i += 1
         N -= 1
 
@@ -110,12 +114,13 @@ def havoc_random_replace(s: str) -> str:
     p = random.randint(0, 3)
     if p:
         while l > 0:
-            s[i] = chr(random.randint(0, 255))
+            # s[i] = chr(random.randint(0, 255))
+            s = s[:i] + chr(random.randint(0, 255)) + s[i+1:]
             i += 1
             l -= 1
     else:
         _i = random.randint(0, len(s) - l)
-        s[i:i+l] = s[_i:_i+l]
+        s = s[:i] + s[_i:_i+l] + s[i+l:]
 
     return s
 
@@ -160,4 +165,7 @@ class Mutator:
 
     def mutate(self, inp: Any) -> Any:
         mutator = random.choice(self.mutators)
-        return mutator(inp)
+        try:
+            return mutator(inp)
+        except:
+            return inp

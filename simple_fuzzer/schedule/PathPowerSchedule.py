@@ -13,3 +13,5 @@ class PathPowerSchedule(PowerSchedule):
     def assign_energy(self, population: Sequence[Seed]) -> None:
         """Assign exponential energy inversely proportional to path frequency"""
         # TODO
+
+        super().assign_energy(population=population)
