@@ -92,7 +92,9 @@ class GreyBoxFuzzer(Fuzzer):
                 seed = Seed(self.inp, runner.coverage())
                 self.population.append(seed)
         if outcome == Runner.FAIL:
-            self.last_crash_time = time.time()
+            uniq_crash_num = len(set(self.crash_map.values()))
             self.crash_map[self.inp] = result
+            if len(set(self.crash_map.values())) != uniq_crash_num:
+                self.last_crash_time = time.time()
 
         return result, outcome
