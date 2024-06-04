@@ -70,14 +70,14 @@ def interesting_random_bytes(s: str) -> str:
     注意：不要越界
     """
     # TODO
-    interesting_values = [42, 42, 42, 42]
+    interesting_values = {
+        1: '.',
+        2: '<>',
+        4: '-<>.'
+    }
     N = 1 << random.randint(0, 2)
     i = random.randint(0, len(s)-N)
-    while N > 0:
-        # s[i] = chr(interesting_values[N - 1])
-        s = s[:i] + chr(interesting_values[N - 1]) + s[i+1:]
-        i += 1
-        N -= 1
+    s = s[:i] + interesting_values[N] + s[i+1:]
 
     return s
 
