@@ -3,7 +3,7 @@ from typing import List
 
 from utils.Seed import Seed
 
-MAX_SEEDS = 100
+MAX_SEEDS = 1000
 
 
 class PowerSchedule:
@@ -25,7 +25,7 @@ class PowerSchedule:
         """Choose weighted by normalized energy."""
         self.assign_energy(population)
         norm_energy = self.normalized_energy(population)
-        if len(population) > MAX_SEEDS:
+        while len(population) > MAX_SEEDS:
             min_index = norm_energy.index(min(norm_energy))
             del norm_energy[min_index]
             del population[min_index]

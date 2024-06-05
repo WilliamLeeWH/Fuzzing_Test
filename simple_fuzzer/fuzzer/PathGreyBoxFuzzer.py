@@ -4,6 +4,7 @@ from typing import List, Tuple, Any
 from fuzzer.GreyBoxFuzzer import GreyBoxFuzzer
 from schedule.PathPowerSchedule import PathPowerSchedule
 from runner.FunctionCoverageRunner import FunctionCoverageRunner
+from utils.Seed import Seed
 
 class PathGreyBoxFuzzer(GreyBoxFuzzer):
     """Count how often individual paths are exercised."""
@@ -41,4 +42,7 @@ class PathGreyBoxFuzzer(GreyBoxFuzzer):
         result, outcome = super().run(runner)
 
         # TODO
+        isNewPath = self.schedule.update_path_freq(runner.coverage())
+        if isNewPath:
+            self.population.append(Seed(self.inp, runner.coverage()))
         return result, outcome
