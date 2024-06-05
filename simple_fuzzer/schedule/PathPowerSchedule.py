@@ -29,11 +29,7 @@ class PathPowerSchedule(PowerSchedule):
         """Assign exponential energy inversely proportional to path frequency"""
         # TODO
         for seed in population:
-            # self.update_path_freq(seed.coverage)
-            # ranging [0, 1]
             path_freq = self.path_freq[frozenset(seed.coverage)] / sum(self.path_freq.values())
             
             seed.energy = math.exp(-self.alpla * path_freq)
         
-        print(len(self.path_freq))
-
