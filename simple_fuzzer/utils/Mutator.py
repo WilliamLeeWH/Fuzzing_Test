@@ -4,6 +4,9 @@ import struct
 from typing import Any
 
 
+interesting_clips = []
+
+
 def insert_random_character(s: str) -> str:
     """
     向 s 中下标为 pos 的位置插入一个随机 byte
@@ -182,6 +185,20 @@ def my_havoc_replace_all(s: str) -> str:
     return s
 
 
+def my_insert_interesting_clips(s: str) -> str:
+    if len(interesting_clips) == 0:
+        return s
+
+    a = random.randint(0, len(s)-1)
+    b = random.randint(a, len(s))
+    interesting_clips.append(s[a:b])
+
+    i = random.randint(0, len(s))
+    s = s[0:i] + \
+        interesting_clips[random.randint(
+            0, len(interesting_clips)-1)]+s[i:len(s)]
+
+
 class Mutator:
 
     def __init__(self) -> None:
@@ -199,6 +216,7 @@ class Mutator:
             my_splice_and_reverse,
             my_splice_and_shuffle,
             my_havoc_replace_all,
+            my_insert_interesting_clips,
         ]
 
     def mutate(self, inp: Any) -> Any:

@@ -29,7 +29,7 @@ class PathGreyBoxFuzzer(GreyBoxFuzzer):
         template = """│{runtime}│{path_time}│{crash_time}│{total_exec}│{total_path}│{uniq_crash}│{covered_line}│
 ├───────────────────────┼───────────────────────┼───────────────────────┼───────────────────┼───────────────────┼────────────────┼───────────────────┤"""
         template = template.format(runtime=format_seconds(time.time() - self.start_time).center(23),
-                                   path_time="".center(23),
+                                   path_time=str(len(self.schedule.path_freq)).center(23),
                                    crash_time=format_seconds(self.last_crash_time - self.start_time).center(23),
                                    total_exec=str(self.total_execs).center(19),
                                    total_path="".center(19),
