@@ -154,6 +154,34 @@ def my_splice_and_reverse(s: str) -> str:
     return s
 
 
+def my_splice_and_shuffle(s: str) -> str:
+    i = random.randint(1, 5)
+    ii = []
+    for i in range(0, i):
+        ii.append(random.randint(0, len(s)))
+    ii.sort()
+    ii.append(0)
+    ii.append(len(s))
+
+    sub = []
+    for _i in range(0, i+1):
+        sub.append(s[ii[_i]:ii[_i+1]])
+
+    _s = ""
+    while len(sub):
+        _s += sub.pop(random.randint(0, len(sub)-1))
+
+    return _s
+
+
+def my_havoc_replace_all(s: str) -> str:
+    a = random.randint(0, len(s)-1)
+    b = random.randint(0, len(s)-1)
+
+    s = s.replace(s[a], s[b])
+    return s
+
+
 class Mutator:
 
     def __init__(self) -> None:
@@ -168,6 +196,9 @@ class Mutator:
 
             my_delete_random_bytes,
             my_havoc_random_delete,
+            my_splice_and_reverse,
+            my_splice_and_shuffle,
+            my_havoc_replace_all,
         ]
 
     def mutate(self, inp: Any) -> Any:

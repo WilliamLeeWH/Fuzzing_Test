@@ -3,8 +3,10 @@ import time
 import random
 
 from fuzzer.PathGreyBoxFuzzer import PathGreyBoxFuzzer
+from fuzzer.BlendGreyBoxFuzzer import BlendGreyBoxFuzzer
 from runner.FunctionCoverageRunner import FunctionCoverageRunner
 from schedule.PathPowerSchedule import PathPowerSchedule
+from schedule.BlendPowerSchedule import BlendPowerSchedule
 from samples.Samples import sample1, sample2, sample3, sample4
 from utils.ObjectUtils import dump_object, load_object
 
@@ -21,7 +23,8 @@ class Result:
 
 
 if __name__ == "__main__":
-    random.seed(42)
+    # random.seed(42)
+    random.seed(time.time())
 
     sample_list = [
         {"func": sample1, "seed":"corpus/corpus_1", "result":"Sample-1.pkl"},
@@ -34,8 +37,10 @@ if __name__ == "__main__":
     f_runner = FunctionCoverageRunner(sample["func"])
     seeds = load_object(sample["seed"])
 
-    grey_fuzzer = PathGreyBoxFuzzer(
-        seeds=seeds, schedule=PathPowerSchedule(), is_print=True)
+    # grey_fuzzer = PathGreyBoxFuzzer(
+        # seeds=seeds, schedule=PathPowerSchedule(), is_print=True)
+    grey_fuzzer = BlendGreyBoxFuzzer(
+        seeds=seeds, schedule=BlendPowerSchedule(), is_print=True)
     start_time = time.time()
     grey_fuzzer.runs(f_runner, run_time=300)
     res = Result(grey_fuzzer.covered_line, set(

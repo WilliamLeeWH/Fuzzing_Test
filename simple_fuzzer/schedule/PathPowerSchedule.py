@@ -14,7 +14,6 @@ class PathPowerSchedule(PowerSchedule):
         # TODO
         self.path_freq = {}
         self.alpla = 1
-        self.crash = False
 
     def update_path_freq(self, path: Set[Location]):
         path = frozenset(path)

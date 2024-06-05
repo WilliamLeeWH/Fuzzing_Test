@@ -3,7 +3,7 @@ from typing import List
 
 from utils.Seed import Seed
 
-MAX_SEEDS = 1000
+MAX_SEEDS = 100
 
 
 class PowerSchedule:
