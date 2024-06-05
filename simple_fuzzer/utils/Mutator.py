@@ -147,6 +147,13 @@ def my_havoc_random_delete(s: str) -> str:
     return s
 
 
+def my_splice_and_reverse(s: str) -> str:
+    i = random.randint(0, len(s))
+
+    s = s[i:len(s)] + s[0:i]
+    return s
+
+
 class Mutator:
 
     def __init__(self) -> None:
