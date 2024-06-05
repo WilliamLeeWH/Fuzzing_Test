@@ -42,7 +42,21 @@ class PathGreyBoxFuzzer(GreyBoxFuzzer):
         result, outcome = super().run(runner)
 
         # TODO
-        isNewPath = self.schedule.update_path_freq(runner.coverage())
+        # isNewPath = self.schedule.update_path_freq(runner.coverage())
+        # if isNewPath:
+        #     self.population.append(Seed(self.inp, runner.coverage()))
+
+        isNewPath = False
+        for loc in runner.coverage():
+            if isNewPath == False:
+                isNewPath = self.schedule.update_line_freq(loc)
+            else:
+                self.schedule.update_line_freq(loc)
         if isNewPath:
             self.population.append(Seed(self.inp, runner.coverage()))
+
+        # if outcome == runner.FAIL:
+        #     self.schedule.fails.append(self.inp)
+        #     self.population.append(Seed(self.inp, runner.coverage()))
+
         return result, outcome
