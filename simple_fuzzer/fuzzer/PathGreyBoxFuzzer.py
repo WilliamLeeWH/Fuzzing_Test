@@ -41,5 +41,4 @@ class PathGreyBoxFuzzer(GreyBoxFuzzer):
         result, outcome = super().run(runner)
 
         # TODO
-        self.schedule.crash = outcome == runner.FAIL
         return result, outcome
