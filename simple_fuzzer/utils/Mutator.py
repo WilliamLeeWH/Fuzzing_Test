@@ -198,6 +198,21 @@ def my_insert_interesting_clips(s: str) -> str:
         interesting_clips[random.randint(
             0, len(interesting_clips)-1)]+s[i:len(s)]
 
+def my_change_case(s: str) -> str:
+    """
+    随机选取 N 字节（N = 1, 2, 4），将改变该位置字符的大小写
+    """
+    n = random.choice([1, 2, 4])
+    i = min(n, len(s))
+    if len(s) - n > 0:
+        pos = random.randint(0, len(s) - n)
+    else:
+        pos = 0
+    for i in range(i):
+        char = s[pos + i]
+        if char.isalpha():
+            s = s[:pos + i] + char.swapcase() + s[pos + i + 1:]
+    return s
 
 class Mutator:
 
@@ -217,6 +232,7 @@ class Mutator:
             my_splice_and_shuffle,
             my_havoc_replace_all,
             my_insert_interesting_clips,
+            my_change_case,
         ]
 
     def mutate(self, inp: Any) -> Any:
