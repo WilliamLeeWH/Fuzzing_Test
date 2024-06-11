@@ -9,6 +9,7 @@ from runner.FunctionCoverageRunner import FunctionCoverageRunner
 from schedule.PathPowerSchedule import PathPowerSchedule
 from schedule.BlendPowerSchedule import BlendPowerSchedule
 from schedule.AdvancedBlendPowerSchedule import AdvancedBlendPowerSchedule
+from schedule.CoveragePowerSchedule import CoveragePowerSchedule
 from samples.Samples import sample1, sample2, sample3, sample4
 from utils.ObjectUtils import dump_object, load_object
 
@@ -24,7 +25,7 @@ class Result:
     #     return "Covered Lines: " + str(self.covered_line) + ", Crashes Num: " + str(self.crashes) + ", Start Time: " + str(self.start_time) + ", End Time: " + str(self.end_time)
     # 更直观的输出
     def __str__(self):
-        return "Covered Lines Num: " + str(len(self.covered_line)) + ", Crashes Num: " + str(len(self.crashes)) + "\nCovered Lines: " + str(self.covered_line) + "\n\nCrashes Num: " + str(self.crashes) + "\nStart Time: " + str(self.start_time) + ", End Time: " + str(self.end_time)
+        return "Covered Lines Num: " + str(len(self.covered_line)) + ", Crashes Num: " + str(len(self.crashes)) + "\n\nCovered Lines: " + str(self.covered_line) + "\n\nCrashes Num: " + str(self.crashes) + "\nStart Time: " + str(self.start_time) + ", End Time: " + str(self.end_time)
 
 if __name__ == "__main__":
     # random.seed(42)
@@ -43,12 +44,13 @@ if __name__ == "__main__":
 
     # grey_fuzzer = PathGreyBoxFuzzer(
     #     seeds=seeds, schedule=PathPowerSchedule(), is_print=True)
-    grey_fuzzer = BlendGreyBoxFuzzer(
-        seeds=seeds, schedule=AdvancedBlendPowerSchedule(), is_print=True)
-    # grey_fuzzer = GreyBoxFuzzer(
-    #     seeds=seeds, schedule=AdvancedPowerSchedule(), is_print=True)
+    # grey_fuzzer = BlendGreyBoxFuzzer(
+    #     seeds=seeds, schedule=BlendPowerSchedule(), is_print=True)
+    grey_fuzzer = GreyBoxFuzzer(
+        seeds=seeds, schedule=CoveragePowerSchedule(), is_print=True)
+
     start_time = time.time()
-    grey_fuzzer.runs(f_runner, run_time=600)
+    grey_fuzzer.runs(f_runner, run_time=50000)
     res = Result(grey_fuzzer.covered_line, set(
         grey_fuzzer.crash_map.values()), start_time, time.time())
     dump_object("_result" + os.sep + sample["result"], res)
