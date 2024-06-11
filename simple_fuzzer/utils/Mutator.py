@@ -198,7 +198,7 @@ def my_insert_interesting_clips(s: str) -> str:
         interesting_clips[random.randint(
             0, len(interesting_clips)-1)]+s[i:len(s)]
 
-def my_change_case(s: str) -> str:
+def my_change_lower_upper_case(s: str) -> str:
     """
     随机选取 N 字节（N = 1, 2, 4），将改变该位置字符的大小写
     """
@@ -232,7 +232,7 @@ class Mutator:
             my_splice_and_shuffle,
             my_havoc_replace_all,
             my_insert_interesting_clips,
-            my_change_case,
+            my_change_lower_upper_case,
         ]
 
     def mutate(self, inp: Any) -> Any:
