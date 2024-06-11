@@ -17,6 +17,14 @@ class Seed:
         self.id = get_md5_of_object(data)
         self.path = os.path.join(dir, f"{self.id}.seed")
         self.save(data, _coverage)
+        # if data is not None:
+        #     self.id = get_md5_of_object(data)
+        #     self.path = os.path.join(directory, f"{self.id}.seed")
+        #     self.save(data, _coverage)
+        # else:
+        #     self.id = None
+        #     self.path = None
+
 
     def __str__(self) -> str:
         """Returns data as string representation of the seed"""
@@ -39,7 +47,6 @@ class Seed:
         return data
 
     def load_coverage(self) -> str:
-        
         seed = load_object(self.path)
         coverage = seed['coverage']
         return coverage
