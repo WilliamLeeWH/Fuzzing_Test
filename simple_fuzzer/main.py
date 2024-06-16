@@ -42,12 +42,12 @@ if __name__ == "__main__":
     f_runner = FunctionCoverageRunner(sample["func"])
     seeds = load_object(sample["seed"])
 
-    # grey_fuzzer = PathGreyBoxFuzzer(
-    #     seeds=seeds, schedule=PathPowerSchedule(), is_print=True)
+    grey_fuzzer = PathGreyBoxFuzzer(
+        seeds=seeds, schedule=PathPowerSchedule(), is_print=True)
     # grey_fuzzer = BlendGreyBoxFuzzer(
     #     seeds=seeds, schedule=BlendPowerSchedule(), is_print=True)
-    grey_fuzzer = GreyBoxFuzzer(
-        seeds=seeds, schedule=CoveragePowerSchedule(), is_print=True)
+    # grey_fuzzer = GreyBoxFuzzer(
+    #     seeds=seeds, schedule=CoveragePowerSchedule(), is_print=True)
 
     start_time = time.time()
     grey_fuzzer.runs(f_runner, run_time=600)

@@ -357,7 +357,7 @@ def insert_html_entity(s: str) -> str:
            self.delta = 2
            self.fails = []
            self.time = {}
-
+   
        def update_path_freq(self, path: Set[Location]):
            path = frozenset(path)
            if path in self.paths:
@@ -366,21 +366,21 @@ def insert_html_entity(s: str) -> str:
            else:
                self.paths[path] = 1
                return True
-
+   
        def assign_energy(self, population: Sequence[Seed]) -> None:
            for seed in population:
                if len(seed.data) <= 1:
                    seed.energy = 0
                    continue
                seed.energy = 1.0
-
+   
                path_freq = self.paths[frozenset(seed.coverage)] / sum(self.paths.values())
-
+   
                if seed.data in self.fails:
                    seed.energy *= math.exp(self.gamma)
                else:
                    seed.energy *= math.exp(-self.delta * path_freq)
-
+   
                seed.energy *= self.alpla * self.time[seed.data]/len(seed.data)
                try:
                    seed.energy *= math.log(self.beta, len(seed.data))
@@ -456,19 +456,31 @@ class Seed:
         return coverage
 ```
 
-### 测试结果
 
-在对 Sample Programs 进行 Fuzzing 测试的结果：
+
+## 五、测试结果
+
+在对 Sample Programs 进行 Fuzzing 测试的结果
+
+从评分标准来看，实现的所有schedule取得的最终分数都相同，即都能拿满所有的指标分数，因此这里只展示PathPowerSchedule的结果：
 
 1. **Sample 1**
-   Crashes:
-   Covered Lines:
+   Crashes: 5
+   Covered Lines: 10
 2. **Sample 2**
-   Crashes:
-   Covered Lines:
+   Crashes: 4
+   Covered Lines: 15
 3. **Sample 3**
-   Crashes:
-   Covered Lines:
+   Crashes: 8
+   Covered Lines: 9
 4. **Sample 4**
-   Crashes:
-   Covered Lines:
+   Crashes: 2
+   Covered Lines: 606
+
+| sample ID | Crashes | Covered Lines |
+| --------- | ------- | ------------- |
+| 1         | 5       | 10            |
+| 2         | 4       | 15            |
+| 3         | 8       | 9             |
+| 4         | 2       | 606           |
+
