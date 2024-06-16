@@ -198,10 +198,9 @@ def my_insert_interesting_clips(s: str) -> str:
         interesting_clips[random.randint(
             0, len(interesting_clips)-1)]+s[i:len(s)]
 
+    return s
+
 def my_change_lower_upper_case(s: str) -> str:
-    """
-    随机选取 N 字节（N = 1, 2, 4），将改变该位置字符的大小写
-    """
     n = random.choice([1, 2, 4])
     i = min(n, len(s))
     if len(s) - n > 0:
@@ -214,22 +213,31 @@ def my_change_lower_upper_case(s: str) -> str:
             s = s[:pos + i] + char.swapcase() + s[pos + i + 1:]
     return s
 
-def my_change_case(s: str) -> str:
-    _n = random.choice([1, 2, 4])
-    if len(s) - _n > 0:
-        pos = random.randint(0, len(s) - _n)
-    else:
-        pos = 0
-    index = min(_n, len(s))
-    for i in range(index):
-        # print(pos+i, len(s))
-        char = s[pos + i]
-        if char.isalpha():  
-            s = s[:pos + i] + char.swapcase() + s[pos + i + 1:]
+def insert_html_tag(s: str) -> str:
+    tags = ['<html>', '</html>', '<body>', '</body>', '<div>', '</div>', '<p>', '</p>', '<!-- comment -->']
+    tag = random.choice(tags)
+    pos = random.randint(0, len(s))
+    return s[:pos] + tag + s[pos:]
+
+def insert_html_attribute(s: str) -> str:
+    attributes = [' id="random"', ' class="random"', ' style="color: red;"']
+    attribute = random.choice(attributes)
+    tags = ['<div', '<p', '<span', '<a']
+    for tag in tags:
+        if tag in s:
+            pos = s.find(tag) + len(tag)
+            s = s[:pos] + attribute + s[pos:]
+            break
     return s
 
-class Mutator:
+def insert_html_entity(s: str) -> str:
+    entities = ['&amp;', '&lt;', '&gt;', '&quot;', '&#39;']
+    entity = random.choice(entities)
+    pos = random.randint(0, len(s))
+    return s[:pos] + entity + s[pos:]
 
+
+class Mutator:
     def __init__(self) -> None:
         """Constructor"""
         self.mutators = [
@@ -239,7 +247,6 @@ class Mutator:
             interesting_random_bytes,
             havoc_random_insert,
             havoc_random_replace,
-
             my_delete_random_bytes,
             my_havoc_random_delete,
             my_splice_and_reverse,
@@ -247,7 +254,9 @@ class Mutator:
             my_havoc_replace_all,
             my_insert_interesting_clips,
             my_change_lower_upper_case,
-            my_change_case,
+            insert_html_tag,
+            insert_html_attribute,
+            insert_html_entity
         ]
 
     def mutate(self, inp: Any) -> Any:
